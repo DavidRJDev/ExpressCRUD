@@ -2,7 +2,9 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const { connect } = require('./db')
-const { helloWorld } = require('./controllers/users')
+// const { helloWorld } = require('./controllers/users')
+const userCrud = require('./controllers/users')
+const User = require('./models/users')
 
 class App {
     constructor() {
@@ -18,7 +20,15 @@ class App {
 
     routes() {
         // Routes
-        app.get('/', helloWorld);
+        app.get("/user/", userCrud.getAll)
+        app.get("/user/id/:id", userCrud.getById)
+        app.get("/user/name/", userCrud.getByName)
+        app.post("/user/create", userCrud.create)
+        app.put("/user/update/:id", userCrud.updateWithPath)
+        app.put("/user/update", userCrud.updateWithBody)
+        app.delete("/user/delete/:id", userCrud.remove)
+
+        app.get("/login", userCrud.login)
     }
 
     initDatabase() {
